@@ -4,13 +4,20 @@ from enum import Enum
 
 
 class Direction(Enum):
-    LEFT = 0
-    RIGHT = 1
-    UP = 2
-    DOWN = 3
+    """
+    An enumeration to represent the four cardinal directions.
+    """
+    LEFT = (0, -1)
+    RIGHT = (0, 1)
+    UP = (-1, 0)
+    DOWN = (1, 0)
 
 
 class Path:
+    """
+    A utility class to aid in the path finding algorithm.
+    Uses a MazeTile object to store the tile and a boolean to determine if the path is a backtrack.
+    """
     def __init__(self, tile: MazeTile):
         self.tile = tile
         self.backtrack = False
@@ -26,7 +33,10 @@ class Path:
 
 
 class PathFinder:
-    def __init__(self, tile_board, start_pos):
+    """
+    A class to find the path from the start to the end of a maze.
+    """
+    def __init__(self, tile_board: list[list[MazeTile]], start_pos: tuple[int, int]):
         self.tile_board = copy.deepcopy(tile_board)
         self.start_pos = start_pos
         self.path_board = self.init_path_board()
@@ -34,27 +44,22 @@ class PathFinder:
         self.path = self.find_path()
         self.clean_path()
 
-    def init_path_board(self):
+    def init_path_board(self) -> list[list[Path]]:
+        """
+        Initializes the path board with Path objects.
+        """
         path_board = self.tile_board
         for row in range(len(path_board)):
             for col in range(len(path_board[0])):
                 path_board[row][col] = Path(path_board[row][col])
 
         return path_board
-    
-    def clean_path(self):
-        for i in range(len(self.path) - 1, -1, -1):
-            try:
-                cur_x, cur_y = self.path[i].get_tile().get_x(), self.path[i].get_tile().get_y()
-                next_x, next_y = self.path[i + 1].get_tile().get_x(), self.path[i + 1].get_tile().get_y()
 
-                if abs(cur_x - next_x) > 1 or abs(cur_y - next_y) > 1 or (abs(cur_x - next_x) == 1 and abs(cur_y - next_y) == 1):
-                    self.path.pop(i)
-
-            except IndexError:
-                pass
-
-    def find_path(self):
+    def find_path(self) -> list[Path]:
+        """
+        Finds the path from the start to the end of the maze.
+        Returns a list of Path objects.
+        """
         top = self.start_path
         top_tile = top.get_tile()
 
@@ -66,14 +71,8 @@ class PathFinder:
 
             for direction in Direction:
                 x, y = top_tile.get_x(), top_tile.get_y()
-                if direction == Direction.LEFT:
-                    x -= 1
-                elif direction == Direction.RIGHT:
-                    x += 1
-                elif direction == Direction.UP:
-                    y -= 1
-                elif direction == Direction.DOWN:
-                    y += 1
+                y += direction.value[0]
+                x += direction.value[1]
 
                 try:
                     new_top = self.path_board[y][x]
@@ -93,13 +92,12 @@ class PathFinder:
 
             if dead_end:
                 while True:
-                    top = stack[-1]
-                    top_tile = top.get_tile()
-
                     if top_tile.get_tile_type == MazeTileType.START:
                         return
                     elif not top.is_backtrack():
                         stack.pop()
+                        top = stack[-1]
+                        top_tile = top.get_tile()
                     else:
                         stack.pop()
                         break
@@ -112,6 +110,24 @@ class PathFinder:
 
             if top_tile.get_tile_type() == MazeTileType.END:
                 return stack
+            
+    def clean_path(self) -> None:
+        """
+        Removes any unnecessary tiles from the path.
+        """
+        for i in range(len(self.path) - 1, -1, -1):
+            try:
+                cur_x, cur_y = self.path[i].get_tile().get_x(), self.path[i].get_tile().get_y()
+                next_x, next_y = self.path[i + 1].get_tile().get_x(), self.path[i + 1].get_tile().get_y()
 
-    def get_path(self):
+                if abs(cur_x - next_x) > 1 or abs(cur_y - next_y) > 1 or (abs(cur_x - next_x) == 1 and abs(cur_y - next_y) == 1):
+                    self.path.pop(i)
+
+            except IndexError:
+                pass
+
+    def get_path(self) -> list[Path]:
+        """
+        Returns the path from the start to the end of the maze.
+        """
         return self.path

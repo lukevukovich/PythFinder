@@ -5,7 +5,11 @@ import sys
 
 TILE_SIZE = 40
 
-def pygame_init(width, height):
+
+def pygame_init(width: int, height: int):
+    """
+    Initializes the pygame screen.
+    """
     pygame.init()
     screen = pygame.display.set_mode((width, height))
     pygame.display.set_caption("PythFinder")
@@ -14,7 +18,11 @@ def pygame_init(width, height):
     pygame.display.set_icon(icon)
     return screen
 
+
 def main():
+    """
+    Main function and event loop.
+    """
     board_file = sys.argv[1]
     board_loader = BoardLoader(board_file)
     tile_board = board_loader.get_tile_board()

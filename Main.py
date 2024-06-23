@@ -1,12 +1,22 @@
 import pygame
 from src.BoardLoader import BoardLoader
 from src.PathFinder import PathFinder
+import sys
 
-TILE_SIZE = 50
+TILE_SIZE = 40
 
+def pygame_init(width, height):
+    pygame.init()
+    screen = pygame.display.set_mode((width, height))
+    pygame.display.set_caption("PythFinder")
+    icon = pygame.Surface((32, 32))
+    icon.fill((0, 255, 0))
+    pygame.display.set_icon(icon)
+    return screen
 
 def main():
-    board_loader = BoardLoader("./boards/board2.txt")
+    board_file = sys.argv[1]
+    board_loader = BoardLoader(board_file)
     tile_board = board_loader.get_tile_board()
     start_pos = board_loader.get_start()
 
@@ -15,10 +25,7 @@ def main():
 
     height = len(tile_board) * TILE_SIZE
     width = len(tile_board[0]) * TILE_SIZE
-
-    pygame.init()
-    screen = pygame.display.set_mode((width, height))
-    pygame.display.set_caption("PythFinder")
+    screen = pygame_init(width, height)
 
     solved = False
     while True:

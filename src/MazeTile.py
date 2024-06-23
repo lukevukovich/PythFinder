@@ -2,8 +2,10 @@ from enum import Enum
 
 
 class MazeTileType(Enum):
-    WALL = (0, 0, 0)
-    PATH = (255, 255, 255)
+    WALL = (255, 255, 255)
+    PATH = (0, 0, 0)
+    START = (0, 0, 255)
+    END = (255, 0, 0)
     WALKED = (0, 255, 0)
 
 
@@ -17,6 +19,9 @@ class MazeTile:
     def set_tile_type(self, tile_type: MazeTileType):
         self.tile_type = tile_type
         self.color = tile_type.value
+
+    def get_tile_type(self):
+        return self.tile_type
 
     def get_color(self):
         return self.color

@@ -1,5 +1,5 @@
 from src.MazeTile import MazeTile, MazeTileType
-from src.PathFinder import Path
+from src.Path import Path
 
 
 class BoardLoader:

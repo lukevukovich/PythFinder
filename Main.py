@@ -2,7 +2,7 @@ import pygame
 from src.BoardLoader import BoardLoader
 from src.PathFinder import PathFinder
 import sys
-from src.PathFinder import Direction
+from src.Direction import Direction
 import itertools
 
 TILE_SIZE = 30

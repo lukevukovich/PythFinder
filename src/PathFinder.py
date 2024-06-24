@@ -1,35 +1,7 @@
 from src.MazeTile import MazeTile, MazeTileType
 import copy
-from enum import Enum
-
-
-class Direction(Enum):
-    """
-    An enumeration to represent the four cardinal directions.
-    """
-    LEFT = (0, -1)
-    RIGHT = (0, 1)
-    UP = (-1, 0)
-    DOWN = (1, 0)
-
-
-class Path:
-    """
-    A utility class to aid in the path finding algorithm.
-    Uses a MazeTile object to store the tile and a boolean to determine if the path is a backtrack.
-    """
-    def __init__(self, tile: MazeTile):
-        self.tile = tile
-        self.backtrack = False
-
-    def get_tile(self):
-        return self.tile
-
-    def is_backtrack(self):
-        return self.backtrack
-
-    def set_backtrack(self, backtrack):
-        self.backtrack = backtrack
+from src.Direction import Direction
+from src.Path import Path
 
 
 class PathFinder:

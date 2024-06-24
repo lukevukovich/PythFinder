@@ -1,5 +1,6 @@
 from src.Tile import Tile, TileType
 from src.Path import Path
+import sys
 
 
 class BoardLoader:
@@ -45,6 +46,10 @@ class BoardLoader:
                 tile = Tile(tile_type, col, row)
                 tile_row.append(tile)
             tile_board.append(tile_row)
+        
+        if start is None or end is None:
+            print("Start and end positions not found.")
+            sys.exit(1)
         return tile_board, start, end
     
     def set_path(self, path: list[Path]):

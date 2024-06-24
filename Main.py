@@ -3,6 +3,7 @@ from src.BoardLoader import BoardLoader
 from src.PathFinder import PathFinder, Direction
 import sys
 import itertools
+import time
 
 TILE_SIZE = 30
 
@@ -31,6 +32,7 @@ def main():
     start_pos = board_loader.get_start()
 
     # Find shortest and longest path by permuting the directions
+    start = time.time()
     directions = [Direction.LEFT, Direction.RIGHT, Direction.UP, Direction.DOWN]
     combinations = list(itertools.product(directions, repeat=len(directions)))
     paths = []
@@ -40,8 +42,10 @@ def main():
         paths.append(path)
     paths = [path for path in paths if path]
     if not paths:
-        print("No path found.")
-        return
+        print("No paths found.")
+        sys.exit(1)
+    else:
+        print(f"Found {len(paths)} paths in {time.time() - start:.2f} seconds.")
     shortest_path = min(paths, key=len)
     longest_path = max(paths, key=len)
 
@@ -69,9 +73,9 @@ def main():
         if current_cycle == 0:
             pygame.display.set_caption("PythFinder")
         elif current_cycle == 1:
-            pygame.display.set_caption(f"PythFinder | Shortest Path | {len(shortest_path)} steps")
+            pygame.display.set_caption(f"PythFinder | Shortest Path | {len(shortest_path) - 2} steps")
         else:
-            pygame.display.set_caption(f"PythFinder | Longest Path | {len(longest_path)} steps")
+            pygame.display.set_caption(f"PythFinder | Longest Path | {len(longest_path) - 2} steps")
 
         screen.fill((0, 0, 0))
 

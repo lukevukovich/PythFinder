@@ -7,8 +7,8 @@ class TileType(Enum):
     """
     WALL = (0, 0, 0)
     PATH = (255, 255, 255)
-    START = (0, 0, 255)
-    END = (255, 0, 0)
+    START = (7, 110, 255)
+    END = (254, 33, 33)
     WALKED = (0, 255, 0)
 
 

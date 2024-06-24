@@ -39,6 +39,9 @@ def main():
         path = path_finder.get_path()
         paths.append(path)
     paths = [path for path in paths if path]
+    if not paths:
+        print("No path found.")
+        return
     shortest_path = min(paths, key=len)
     longest_path = max(paths, key=len)
 

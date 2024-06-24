@@ -1,12 +1,12 @@
-from src.MazeTile import MazeTile
+from src.Tile import Tile
 
 
 class Path:
     """
     A utility class to aid in the path finding algorithm.
-    Uses a MazeTile object to store the tile and a boolean to determine if the path is a backtrack.
+    Uses a Tile object to store the tile and a boolean to determine if the path is a backtrack.
     """
-    def __init__(self, tile: MazeTile):
+    def __init__(self, tile: Tile):
         self.tile = tile
         self.backtrack = False
 

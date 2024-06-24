@@ -1,36 +1,36 @@
 from enum import Enum
 
 
-class MazeTileType(Enum):
+class TileType(Enum):
     """
-    An enumeration to represent the different types of tiles in the maze.
+    An enumeration to represent the different types of tiles in the board.
     """
-    WALL = (255, 255, 255)
-    PATH = (0, 0, 0)
+    WALL = (0, 0, 0)
+    PATH = (255, 255, 255)
     START = (0, 0, 255)
     END = (255, 0, 0)
     WALKED = (0, 255, 0)
 
 
-class MazeTile:
+class Tile:
     """
-    A class to represent a tile in the maze.
+    A class to represent a tile in the board.
     Will store the tile type, color, x and y position.
     """
-    def __init__(self, tile_type: MazeTileType, x: int, y: int):
+    def __init__(self, tile_type: TileType, x: int, y: int):
         self.tile_type = tile_type
         self.color = tile_type.value
         self.x = x
         self.y = y
 
-    def set_tile_type(self, tile_type: MazeTileType) -> None:
+    def set_tile_type(self, tile_type: TileType) -> None:
         """
         Sets the tile type and color of the tile.
         """
         self.tile_type = tile_type
         self.color = tile_type.value
 
-    def get_tile_type(self) -> MazeTileType:
+    def get_tile_type(self) -> TileType:
         """
         Returns the tile type of the tile.
         """

@@ -1,14 +1,25 @@
-from src.MazeTile import MazeTile, MazeTileType
+from src.Tile import Tile, TileType
 import copy
-from src.Direction import Direction
 from src.Path import Path
+from enum import Enum
+
+
+class Direction(Enum):
+    """
+    An enumeration to represent the four cardinal directions.
+    """
+
+    LEFT = (0, -1)
+    RIGHT = (0, 1)
+    UP = (-1, 0)
+    DOWN = (1, 0)
 
 
 class PathFinder:
     """
-    A class to find the path from the start to the end of a maze.
+    A class to find the path from the start to the end of a board.
     """
-    def __init__(self, tile_board: list[list[MazeTile]], start_pos: tuple[int, int], directions: list[Direction] = None):
+    def __init__(self, tile_board: list[list[Tile]], start_pos: tuple[int, int], directions: list[Direction] = None):
         self.tile_board = copy.deepcopy(tile_board)
         self.start_pos = start_pos
         self.directions = directions
@@ -30,7 +41,7 @@ class PathFinder:
 
     def find_path(self) -> list[Path]:
         """
-        Finds the path from the start to the end of the maze.
+        Finds the path from the start to the end of the board.
         Returns a list of Path objects if a path exists, otherwise returns an empty list.
         """
         top = self.start_path
@@ -46,7 +57,7 @@ class PathFinder:
             top = stack[-1]
             top_tile = top.get_tile()
 
-            if top_tile.get_tile_type() == MazeTileType.END:
+            if top_tile.get_tile_type() == TileType.END:
                 return stack
 
             # Check all directions for a valid path
@@ -63,7 +74,7 @@ class PathFinder:
 
                 # Check that node is valid
                 if (
-                    new_top.get_tile().get_tile_type() != MazeTileType.WALL
+                    new_top.get_tile().get_tile_type() != TileType.WALL
                     and (x, y) not in visited
                 ):
                     # Add to stack, mark as visited, and set backtrack to True
@@ -80,7 +91,7 @@ class PathFinder:
                 while stack:
                     top = stack[-1]
                     top_tile = top.get_tile()
-                    if top_tile.get_tile_type() == MazeTileType.START:
+                    if top_tile.get_tile_type() == TileType.START:
                         return []  # No path found
                     stack.pop()
                     coord_stack.pop()
@@ -111,6 +122,6 @@ class PathFinder:
 
     def get_path(self) -> list[Path]:
         """
-        Returns the path from the start to the end of the maze.
+        Returns the path from the start to the end of the board.
         """
         return self.path

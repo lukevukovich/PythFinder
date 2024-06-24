@@ -1,5 +1,5 @@
 # PythFinder
-A simple GUI representation of a maze path finder using pygame.
+A simple GUI representation of a path finding algorithm using pygame.
 
 # Board Creation
 0. Path

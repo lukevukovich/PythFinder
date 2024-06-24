@@ -1,8 +1,7 @@
 import pygame
 from src.BoardLoader import BoardLoader
-from src.PathFinder import PathFinder
+from src.PathFinder import PathFinder, Direction
 import sys
-from src.Direction import Direction
 import itertools
 
 TILE_SIZE = 30
@@ -34,14 +33,14 @@ def main():
     # Find shortest and longest path by permuting the directions
     directions = [Direction.LEFT, Direction.RIGHT, Direction.UP, Direction.DOWN]
     combinations = list(itertools.product(directions, repeat=len(directions)))
-    maze_paths = []
+    paths = []
     for direction in combinations:
         path_finder = PathFinder(tile_board, start_pos, direction)
-        maze_path = path_finder.get_path()
-        maze_paths.append(maze_path)
-    maze_paths = [path for path in maze_paths if path]
-    shortest_path = min(maze_paths, key=len)
-    longest_path = max(maze_paths, key=len)
+        path = path_finder.get_path()
+        paths.append(path)
+    paths = [path for path in paths if path]
+    shortest_path = min(paths, key=len)
+    longest_path = max(paths, key=len)
 
     # Initialize the pygame screen
     height = len(tile_board) * TILE_SIZE
@@ -59,9 +58,9 @@ def main():
             # Cycle through shortest, longest, and no path
             elif event.type == pygame.KEYDOWN or event.type == pygame.MOUSEBUTTONDOWN:
                 current_cycle = (current_cycle + 1) % len(cycle)
-                board_loader.remove_maze_path()
+                board_loader.remove_path()
                 if cycle[current_cycle] is not None:
-                    board_loader.set_maze_path(cycle[current_cycle])
+                    board_loader.set_path(cycle[current_cycle])
 
         # Set the window title based on the current cycle
         if current_cycle == 0:

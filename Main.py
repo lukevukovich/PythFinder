@@ -66,9 +66,9 @@ def main():
         if current_cycle == 0:
             pygame.display.set_caption("PythFinder")
         elif current_cycle == 1:
-            pygame.display.set_caption("PythFinder | Shortest Path")
+            pygame.display.set_caption(f"PythFinder | Shortest Path | {len(shortest_path)} steps")
         else:
-            pygame.display.set_caption("PythFinder | Longest Path")
+            pygame.display.set_caption(f"PythFinder | Longest Path | {len(longest_path)} steps")
 
         screen.fill((0, 0, 0))
 

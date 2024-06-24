@@ -31,15 +31,17 @@ def main():
     tile_board = board_loader.get_tile_board()
     start_pos = board_loader.get_start()
 
-    # Find shortest path by permuting the directions
+    # Find shortest and longest path by permuting the directions
     directions = [Direction.LEFT, Direction.RIGHT, Direction.UP, Direction.DOWN]
-    permutations = list(itertools.permutations(directions))
+    combinations = list(itertools.product(directions, repeat=len(directions)))
     maze_paths = []
-    for perm in permutations:
-        path_finder = PathFinder(tile_board, start_pos, perm)
+    for direction in combinations:
+        path_finder = PathFinder(tile_board, start_pos, direction)
         maze_path = path_finder.get_path()
         maze_paths.append(maze_path)
+    maze_paths = [path for path in maze_paths if path]
     shortest_path = min(maze_paths, key=len)
+    longest_path = max(maze_paths, key=len)
 
     # Initialize the pygame screen
     height = len(tile_board) * TILE_SIZE
@@ -47,20 +49,27 @@ def main():
     screen = pygame_init(width, height)
 
     # Event loop
-    solved = False
+    cycle = [None, shortest_path, longest_path]
+    current_cycle = 0
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 return
-            # Toggle the shortest path
+            # Cycle through shortest, longest, and no path
             elif event.type == pygame.KEYDOWN or event.type == pygame.MOUSEBUTTONDOWN:
-                if not solved:
-                    board_loader.set_maze_path(shortest_path)
-                    solved = True
-                else:
-                    board_loader.remove_maze_path()
-                    solved = False
+                current_cycle = (current_cycle + 1) % len(cycle)
+                board_loader.remove_maze_path()
+                if cycle[current_cycle] is not None:
+                    board_loader.set_maze_path(cycle[current_cycle])
+
+        # Set the window title based on the current cycle
+        if current_cycle == 0:
+            pygame.display.set_caption("PythFinder")
+        elif current_cycle == 1:
+            pygame.display.set_caption("PythFinder | Shortest Path")
+        else:
+            pygame.display.set_caption("PythFinder | Longest Path")
 
         screen.fill((0, 0, 0))
 

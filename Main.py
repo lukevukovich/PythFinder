@@ -26,6 +26,8 @@ def main():
     Main function and event loop.
     """
     # Load the board and start position
+    if len(sys.argv) != 2:
+        raise ValueError("Missing board file argument.")
     board_file = sys.argv[1]
     board_loader = BoardLoader(board_file)
     tile_board = board_loader.get_tile_board()
